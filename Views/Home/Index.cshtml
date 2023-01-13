@@ -1,0 +1,11 @@
+﻿@model DateTime?
+<div>
+    <label class="h4">Current Time :</label>
+    <label>@DateTime.Now.ToString()</label>
+</div>
+<div>
+    <label class="h4">Cached Time :</label>
+    <label>@Model.Value.ToString()</label>
+</div>
+
+<a class="btn btn-danger" asp-route-val="true">Save To Pdf</a>
