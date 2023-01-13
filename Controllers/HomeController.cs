@@ -1,5 +1,6 @@
 ﻿using CachingExample.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Rotativa.AspNetCore;
@@ -39,6 +40,21 @@ namespace CachingExample.Controllers
                 return new ViewAsPdf(CurrentTime);
             }
             return View(CurrentTime);
+        }
+
+        public IActionResult CountrysData()
+        {
+            Repository repo = new Repository();
+            ViewBag.countries = new SelectList(repo.Countries, "Id", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetState(string CountryId)
+        {
+            Repository repo = new Repository();
+            var stateList = repo.States.Where(x => x.CountryId == Convert.ToInt32(CountryId)).ToList();
+            return Json(new SelectList(stateList,"Id","Name"));
         }
 
         public IActionResult Privacy()
