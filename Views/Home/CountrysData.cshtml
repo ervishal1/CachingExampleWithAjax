@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "CountrysData";
+}
+
+<h1>Countrys Data</h1>
+<div>
+    <select id="CountryList" asp-items="@ViewBag.countries">
+        <option value="-1">Select Country</option>
+    </select>
+</div>
+<div>
+    <select id="StateList"></select>
+</div>
+
+@section scripts{
+    <script>
+        $(Document).ready(function () {
+            $("#CountryList").on("change", function () {
+                $.ajax(
+                    {
+                        type: "Post",
+                        url: "/Home/GetState",
+                        data: { "CountryId": $("#CountryList").val() },
+                        success: function (response) {
+                            var items = "";
+                            $(response).each(function () {
+                                items += "<option value=" + this.value + ">" + this.text + "</option>";
+                            })
+                            $("#StateList").html(items);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    },
+                )
+            });
+        });
+    </script>
+}
